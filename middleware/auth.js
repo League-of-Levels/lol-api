@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { poolPromise } = require('../config/db');
 const mssql = require('mssql');
 
-const JWT_SECRET = 'your_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 exports.authenticateToken = async (req, res, next) => {
     const token = req.header('Authorization')?.split(' ')[1];
@@ -25,7 +25,7 @@ exports.authenticateToken = async (req, res, next) => {
             req.accountId = decoded.accountId;
             next();
         } catch (error) {
-            console.error('Token verification error: ', error);
+            console.error('Token verification error:', error);
             res.status(500).json({ message: 'Internal server error' });
         }
     });

@@ -1,14 +1,15 @@
 const mssql = require('mssql');
 
 const dbConfig = {
-    user: 'your_db_user',
-    password: 'your_db_password',
-    server: 'your_db_server',
-    database: 'your_db_name',
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    server: process.env.DB_SERVER,
+    database: process.env.DB_DATABASE,
     options: {
-        encrypt: true, // Use this if you're on Windows Azure
-        trustServerCertificate: true // Change to false for production
-    }
+        encrypt: process.env.DB_ENCRYPT === 'true',
+        trustServerCertificate: false,
+    },
+    connectionTimeout: parseInt(process.env.DB_CONNECTION_TIMEOUT, 10),
 };
 
 const poolPromise = new mssql.ConnectionPool(dbConfig)
